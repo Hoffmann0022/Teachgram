@@ -1,8 +1,34 @@
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import logo from "../assets/img/logo.png"
 import banner from "../assets/img/img_home.png"
 import details from "../assets/img/details.png"
+import { authService } from "../services/authService"
+import { useAuth } from "../context/authContext"
 
 function Login() {
+  const navigate = useNavigate()
+  const { setAuth } = useAuth()
+
+  const [form, setForm] = useState({ userName: "", password: "" })
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+    try {
+      const response = await authService.login(form)
+      setAuth(response.user, response.token)
+      navigate("/feed")
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f5f5] flex">
 
@@ -17,41 +43,50 @@ function Login() {
             Crie sua conta
           </h3>
 
-          <form method="post" className="flex flex-col gap-5">
+          {error && (
+            <div className="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-500 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
             <div className="flex flex-col gap-2">
-              <label className="text-sm text-[#333]">E-mail</label>
-
+              <label className="text-sm text-[#333]">Username</label>
               <input
-                type="email"
-                name="email"
-                placeholder="Digite seu E-mail"
+                type="text"
+                name="userName"
+                placeholder="Digite seu username"
+                value={form.userName}
+                onChange={(e) => setForm({ ...form, userName: e.target.value })}
                 className="h-12 px-4 rounded-lg border border-gray-300 outline-none focus:border-[#F37671] transition"
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm text-[#333]">Senha</label>
-
               <input
                 type="password"
                 name="password"
                 placeholder="Digite sua senha"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 className="h-12 px-4 rounded-lg border border-gray-300 outline-none focus:border-[#F37671] transition"
               />
             </div>
 
             <button
               type="submit"
-              className="mt-4 h-14 rounded-xl bg-[#F37671] text-white text-xl font-semibold shadow-md hover:opacity-90 transition cursor-pointer"
+              disabled={loading}
+              className="mt-4 h-14 rounded-xl bg-[#F37671] text-white text-xl font-semibold shadow-md hover:opacity-90 transition cursor-pointer disabled:opacity-60"
             >
-              Próximo
+              {loading ? "Entrando..." : "Próximo"}
             </button>
           </form>
 
           <p className="text-center text-gray-600 mt-10">
             Não possui conta?{" "}
-            <a href="#" className="text-[#F37671] font-semibold hover:underline">
+            <a href="/signup" className="text-[#F37671] font-semibold hover:underline">
               Cadastre-se
             </a>
           </p>
@@ -59,14 +94,13 @@ function Login() {
       </section>
 
       <section className="hidden lg:flex w-1/2 relative overflow-hidden">
-
         <img
           src={banner}
           alt=""
           className="w-full h-full object-cover rounded-tl-[180px]"
         />
         <div className="absolute bottom-0 left-0 flex flex-col">
-          <img src={details} alt="" className="" />
+          <img src={details} alt="" />
           <img src={details} alt="" />
         </div>
       </section>
@@ -74,4 +108,4 @@ function Login() {
   )
 }
 
-export default Login 
+export default Login
