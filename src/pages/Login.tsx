@@ -6,7 +6,7 @@ import details from "../assets/img/details.png"
 import { authService } from "../services/authService"
 import { useAuth } from "../context/authContext"
 
-function Login() {
+export function Login() {
   const navigate = useNavigate()
   const { setAuth } = useAuth()
 
@@ -21,7 +21,7 @@ function Login() {
     try {
       const response = await authService.login(form)
       setAuth(response.user, response.token)
-      navigate("/feed")
+      navigate("/perfil") 
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -30,7 +30,7 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex">
+    <div className="min-h-screen bg-[#f5f5f5] flex justify-between">
 
       <section className="w-full lg:w-1/2 flex items-center justify-center px-8">
         <main className="w-full max-w-md">
@@ -93,11 +93,11 @@ function Login() {
         </main>
       </section>
 
-      <section className="hidden lg:flex w-1/2 relative overflow-hidden">
+      <section className="hidden lg:flex relative overflow-hidden w-1/2">
         <img
           src={banner}
           alt=""
-          className="w-full h-full object-cover rounded-tl-[180px]"
+          className="w-full h-full"
         />
         <div className="absolute bottom-0 left-0 flex flex-col">
           <img src={details} alt="" />
@@ -107,5 +107,3 @@ function Login() {
     </div>
   )
 }
-
-export default Login

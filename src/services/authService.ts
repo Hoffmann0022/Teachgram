@@ -1,4 +1,3 @@
-// src/services/authService.ts
 import api from "./api";
 import type { LoginRequest, LoginResponse, SignupRequest, User } from "../types/user";
 
@@ -8,6 +7,7 @@ export const authService = {
 
   login: async (data: LoginRequest): Promise<LoginResponse> => {
     const res = await api.post<LoginResponse>("/users/login", data);
+    localStorage.setItem("userId", String(res.data.user.id));
     localStorage.setItem("token", res.data.token);
     return res.data;
   },
