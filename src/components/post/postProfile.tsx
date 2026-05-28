@@ -24,15 +24,13 @@ export function PostItem({ post }: { post: Post }) {
 
       {hovered && (
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 text-white text-sm font-semibold transition-opacity">
-          <span>❤️ {post.likes}</span>
+          <span><i className="bi bi-heart-fill"></i> {post.likes}</span>
         </div>
       )}
 
       {post.isPrivate && (
-        <div className="absolute top-2 right-2 bg-black/50 rounded-full p-1">
-          <svg width="12" height="12" fill="white" viewBox="0 0 24 24">
-            <path d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V11a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v3H9V6a3 3 0 0 1 3-3z"/>
-          </svg>
+        <div className="absolute top-2 right-2 rounded-full p-1">
+          <i className="bi bi-lock-fill text-gray-500 text-[14px]"></i>
         </div>
       )}
     </div>

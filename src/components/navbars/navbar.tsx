@@ -22,7 +22,6 @@ export function Sidebar({ user }: { user: User | null }) {
         <img src={logo} className="w-50" alt="Teachgram Logo" />
       </div>
 
-      {/* Nav */}
       <nav className="flex flex-col my-20 gap-7 flex-1">
         {navItems.map((item) => (
           <Link
