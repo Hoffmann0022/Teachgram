@@ -21,6 +21,20 @@ export interface SignupRequest {
   bio?: string;
 }
 
+export interface updateAccountRequest {
+  name?: string;
+  mail?: string;
+  phone?: string;
+  password?: string;
+}
+
+export interface updateProfileRequest {
+  userName?: string;
+  bio?: string;
+  profileLink?: string;
+}
+
+
 export interface LoginRequest {
   userName: string;
   password: string;

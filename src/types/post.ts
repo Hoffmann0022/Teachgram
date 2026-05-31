@@ -6,3 +6,11 @@ export interface Post {
   isPrivate: boolean
   createdAt: string
 }
+
+export interface PostForm {
+  title: string
+  description: string
+  photoLink: string
+  videoLink: string
+  isPrivate: boolean
+}

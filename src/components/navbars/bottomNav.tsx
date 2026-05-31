@@ -1,10 +1,16 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import type { User } from "../../types/user"
 import logo from "../../assets/img/logo.png"
+import { useState } from "react"
+import CreatePostModal from "../modals/createPostModal"
+import FriendsModal from "../modals/friendsModal"
 
 export function BottomNav({ user }: { user: User | null }) {
   const location = useLocation()
+  const navigate = useNavigate()
   const current = location.hash.replace("#", "") || "/"
+  const [showModal, setShowModal] = useState(false)
+  const [showFriends, setShowFriends] = useState(false)
 
   const navItems = [
     {
@@ -15,12 +21,14 @@ export function BottomNav({ user }: { user: User | null }) {
     {
       icon: <i className="bi bi-people text-2xl" />,
       iconActive: <i className="bi bi-people-fill text-2xl" />,
-      to: "/amigos",
+      to: "#",
+      onClick: () => setShowFriends(true)
     },
     {
-      icon: <i className="bi bi-plus-square text-2xl"/>,
-      iconActive: <i className="bi bi-plus-square text-2xl"/>,
-      to: "/criar",
+      icon: <i className="bi bi-plus-square text-2xl" />,
+      iconActive: <i className="bi bi-plus-square text-2xl" />,
+      to: "#",
+      onClick: () => setShowModal(true)
     },
     {
       icon: <i className="bi bi-gear text-2xl" />,
@@ -56,6 +64,7 @@ export function BottomNav({ user }: { user: User | null }) {
               <Link
                 key={item.to}
                 to={item.to}
+                onClick={item.onClick}
                 className={`flex flex-col items-center justify-center px-4 transition-all
                   ${isActive ? "text-[#F37671]" : "text-gray-400 hover:text-gray-600"}`}
               >
@@ -64,6 +73,18 @@ export function BottomNav({ user }: { user: User | null }) {
             )
           })}
         </div>
+        {showModal && (
+          <CreatePostModal
+            onClose={() => setShowModal(false)}
+            onSuccess={() => {
+              navigate("/perfil")
+              window.location.reload()
+            }}
+          />)}
+
+        {showFriends &&
+          <FriendsModal onClose={() => setShowFriends(false)} />
+        }
       </nav>
     </>
   )

@@ -4,11 +4,11 @@ import type { LoginRequest, LoginResponse, SignupRequest, User } from "../types/
 export const authService = {
   signup: (data: SignupRequest) =>
     api.post<User>("/users/signup", data).then((res) => res.data),
-
+  
   login: async (data: LoginRequest): Promise<LoginResponse> => {
     const res = await api.post<LoginResponse>("/users/login", data);
-    localStorage.setItem("userId", String(res.data.user.id));
     localStorage.setItem("token", res.data.token);
+    localStorage.setItem("userId", String(res.data.user.id));
     return res.data;
   },
 

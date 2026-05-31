@@ -1,16 +1,44 @@
 import { Link, useNavigate } from "react-router-dom"
 import type { User } from "../../types/user"
 import logo from "../../assets/img/logo.png"
+import { useState } from "react"
+import CreatePostModal from "../modals/createPostModal"
+import FriendsModal from "../modals/friendsModal"
 
 export function Sidebar({ user }: { user: User | null }) {
   const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
+  const [showFriends, setShowFriends] = useState(false)
 
   const navItems = [
-    { icon: <i className="bi bi-house-door text-2xl"></i>, label: "Feed", to: "/feed" },
-    { icon: <i className="bi bi-people text-2xl"></i>, label: "Amigos", to: "/amigos" },
-    { icon: <div></div>, label: "Perfil", to: "/perfil", active: true },
-    { icon: <i className="bi bi-gear text-2xl"></i>, label: "Configurações", to: "/configuracoes" },
-    { icon: <i className="bi bi-plus-square text-2xl"></i>, label: "Criar", to: "/criar" },
+    { 
+      icon: <i className="bi bi-house-door text-2xl"></i>,
+      label: "Feed", 
+      to: "/feed" 
+    },
+    { 
+      icon: <i className="bi bi-people text-2xl"></i>, 
+      label: "Amigos", 
+      to: "#", 
+      onClick: () => setShowFriends(true) 
+    },
+    { 
+      icon: <div></div>, 
+      label: "Perfil", 
+      to: "/perfil", 
+      active: true 
+    },
+    { 
+      icon: <i className="bi bi-gear text-2xl"></i>, 
+      label: "Configurações", 
+      to: "/configuracoes" 
+    },
+    { 
+      icon: <i className="bi bi-plus-square text-2xl"></i>, 
+      label: "Criar", 
+      to: "#", 
+      onClick: () => setShowModal(true)
+    },
   ]
 
   return (
@@ -27,6 +55,7 @@ export function Sidebar({ user }: { user: User | null }) {
           <Link
             key={item.label}
             to={item.to}
+            onClick={item.onClick}
             className={`flex items-center gap-3 px-5 py-6 rounded-xl border border-gray-300  text-sm font-medium transition-all
               ${item.active
                 ? "bg-gray-100 text-gray-900"
@@ -46,6 +75,18 @@ export function Sidebar({ user }: { user: User | null }) {
           </Link>
         ))}
       </nav>
+      {showModal && (
+        <CreatePostModal
+          onClose={() => setShowModal(false)}
+          onSuccess={() => {
+            navigate("/perfil")
+            window.location.reload()
+          }}
+        />)}
+
+      {showFriends &&
+        <FriendsModal onClose={() => setShowFriends(false)} />
+      }
     </aside>
   )
 }

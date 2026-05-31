@@ -4,8 +4,9 @@ import logo from "../assets/img/logo.png"
 import banner from "../assets/img/img_home.png"
 import details from "../assets/img/details.png"
 import { authService } from "../services/authService"
+import Loading from "./Loading"
 
-export function SignUp() {
+export default function SignUp() {
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
@@ -165,6 +166,7 @@ export function SignUp() {
           <img src={details} alt="" />
         </div>
       </section>
+      {loading ? <Loading /> : ""}
     </div>
   )
 }

@@ -1,17 +1,10 @@
 import { useState } from "react"
 import api from "../../services/api"
+import type { PostForm } from "../../types/post"
 
 interface CreatePostModalProps {
   onClose: () => void
   onSuccess: () => void
-}
-
-interface PostForm {
-  title: string
-  description: string
-  photoLink: string
-  videoLink: string
-  isPrivate: boolean
 }
 
 function StepUpload({
@@ -38,9 +31,8 @@ function StepUpload({
     <div>
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-base font-semibold text-gray-800">Criar nova publicação</h2>
-        <button onClick={onClose} className="text-[#F37671] transition text-xl leading-none cursor-pointer">×</button>
+        <button onClick={onClose} className="text-[#F37671] transition text-3xl leading-none cursor-pointer"><i className="bi bi-x"></i></button>
       </div>
-
 
       <div className="flex gap-2">
         <input
@@ -65,7 +57,7 @@ function StepUpload({
           onClick={onNext}
           className="mt-5 w-full h-10 rounded-lg bg-[#F37671] text-white text-sm font-semibold hover:opacity-90 transition cursor-pointer"
         >
-          Avançar →
+          Avançar
         </button>
       )}
     </div>
@@ -87,7 +79,7 @@ function StepPreview({
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <button onClick={onBack} className="text-[#F37671] cursor-pointer">
-            <i className="bi bi-arrow-left text-lg" />
+            <i className="bi bi-arrow-left text-3xl" />
           </button>
           <h2 className="text-base font-semibold text-gray-800">Criar nova publicação</h2>
         </div>
@@ -139,11 +131,11 @@ function StepDetails({
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <button onClick={onBack} className="text-[#F37671] cursor-pointer">
-            <i className="bi bi-arrow-left text-lg" />
+            <i className="bi bi-arrow-left text-3xl" />
           </button>
           <h2 className="text-base font-semibold text-gray-800">Criar nova publicação</h2>
         </div>
-        <button onClick={onClose} className="text-[#F37671] cursor-pointer transition text-xl leading-none">×</button>
+        <button onClick={onClose} className="text-[#F37671] cursor-pointer transition text-3xl leading-none"><i className="bi bi-x"></i></button>
       </div>
 
       <div className="flex gap-4">
@@ -190,13 +182,11 @@ function StepDetails({
         </div>
         <button
           onClick={() => onChange("isPrivate", !form.isPrivate)}
-          className={`relative w-11 h-6 rounded-full transition-colors duration-200 cursor-pointer ${
-            form.isPrivate ? "bg-[#F37671]" : "bg-gray-200"
-          }`}
+          className={`relative w-11 h-6 rounded-full transition-colors duration-200 cursor-pointer ${form.isPrivate ? "bg-[#F37671]" : "bg-gray-200"
+            }`}
         >
-          <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ${
-            form.isPrivate ? "translate-x-5" : "translate-x-0"
-          }`} />
+          <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ${form.isPrivate ? "translate-x-5" : "translate-x-0"
+            }`} />
         </button>
       </div>
 
@@ -296,9 +286,8 @@ export default function CreatePostModal({ onClose, onSuccess }: CreatePostModalP
           {[1, 2, 3].map((s) => (
             <div
               key={s}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                s === step ? "w-6 bg-[#F37671]" : "w-1.5 bg-gray-200"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${s === step ? "w-6 bg-[#F37671]" : "w-1.5 bg-gray-200"
+                }`}
             />
           ))}
         </div>

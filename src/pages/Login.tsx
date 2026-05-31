@@ -5,8 +5,9 @@ import banner from "../assets/img/img_home.png"
 import details from "../assets/img/details.png"
 import { authService } from "../services/authService"
 import { useAuth } from "../context/authContext"
+import Loading from "./Loading"
 
-export function Login() {
+export default function Login() {
   const navigate = useNavigate()
   const { setAuth } = useAuth()
 
@@ -20,11 +21,12 @@ export function Login() {
     setLoading(true)
     try {
       const response = await authService.login(form)
+      console.log("token salvo:", localStorage.getItem("token")) 
       setAuth(response.user, response.token)
       navigate("/perfil") 
     } catch (err: any) {
       setError(err.message)
-    } finally {
+    }  finally {
       setLoading(false)
     }
   }
@@ -40,7 +42,7 @@ export function Login() {
           </div>
 
           <h3 className="text-3xl font-semibold text-[#333] mb-8">
-            Crie sua conta
+            Entre na sua conta
           </h3>
 
           {error && (
@@ -104,6 +106,7 @@ export function Login() {
           <img src={details} alt="" />
         </div>
       </section>
+      {loading ? <Loading/> : ""}
     </div>
   )
 }

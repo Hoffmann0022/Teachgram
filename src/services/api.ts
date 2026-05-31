@@ -19,15 +19,17 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = error.response?.data?.error || "Erro na requisição";
+    const message = error.response?.data?.error || "Erro na requisição"
 
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+      localStorage.removeItem("token")   
+      localStorage.removeItem("userId")
+      window.location.href = "/"         
     }
 
-    return Promise.reject(new Error(message));
+    return Promise.reject(new Error(message))
   }
-);
+)
+
 
 export default api;

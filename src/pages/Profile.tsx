@@ -4,9 +4,9 @@ import api from "../services/api"
 import type { User } from "../types/user"
 import { Sidebar } from "../components/navbars/navbar"
 import type { Post } from "../types/post"
-import { PostItem } from "../components/post/postProfile"
+import { PostProfile } from "../components/post/postProfile"
 import { BottomNav } from "../components/navbars/bottomNav"
-import CreatePostModal from "../components/post/createPostModal"
+import CreatePostModal from "../components/modals/createPostModal"
 
 export default function Profile() {
   const navigate = useNavigate()
@@ -15,8 +15,10 @@ export default function Profile() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [showModal, setShowModal] = useState(false)
+  const [friendsCount, setFriendsCount] = useState(0)
 
-  // ← fora do useEffect
+  
+
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token")
@@ -27,13 +29,16 @@ export default function Profile() {
         return
       }
 
-      const [userRes, postsRes] = await Promise.all([
+      const [userRes, postsRes, friendsRes] = await Promise.all([
         api.get<User>(`/users/${userId}`),
         api.get<Post[]>(`/posts/user/${userId}`),
+        api.get<User[]>(`/users/${userId}/friends`),
       ])
 
+      
       setUser(userRes.data)
       setPosts(postsRes.data)
+      setFriendsCount(friendsRes.data.length)
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -72,7 +77,7 @@ export default function Profile() {
 
       <BottomNav user={user} />
 
-      <main className="flex-1 p-10 lg:mt-10">
+      <main className="flex-1 p-10 mt-15 lg:mt-8">
 
         <div className="flex flex-col sm:flex-row sm:items-end gap-5 lg:gap-20 mb-10">
 
@@ -115,7 +120,7 @@ export default function Profile() {
                 </div>
                 <div className="w-px h-8 bg-gray-200" />
                 <div className="text-center">
-                  <p className="text-xl font-bold text-gray-900">0</p>
+                  <p className="text-xl font-bold text-gray-900">{friendsCount}</p>
                   <p className="text-xs text-gray-400 mt-0.5">Amigos</p>
                 </div>
               </div>
@@ -155,7 +160,7 @@ export default function Profile() {
         ) : (
           <div className="grid grid-cols-3 gap-1">
             {activePosts.map((post) => (
-              <PostItem key={post.id} post={post} />
+              <PostProfile key={post.id} post={post} onDeleted={(id) => setPosts((prev) => prev.filter((p) => p.id !== id))} />
             ))}
           </div>
         )}
@@ -164,8 +169,7 @@ export default function Profile() {
        <CreatePostModal
           onClose={() => setShowModal(false)}
           onSuccess={fetchData}
-        />
-      )}
+        />)}
     </div>
   )
 }
